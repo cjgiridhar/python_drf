@@ -4,7 +4,7 @@ from models import Snippet
 from django.contrib.auth.models import User
 
 class SnippetSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.id')
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Snippet

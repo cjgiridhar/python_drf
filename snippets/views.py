@@ -15,11 +15,9 @@ from rest_framework.authtoken.models import Token
 # Create your views here.
 
 
-
-
 class SnippetList(generics.ListCreateAPIView):
     renderer_classes = (JSONRenderer, )
-    queryset = Snippet.objects.all()
+    queryset = Snippet.objects.filter()
     serializer_class = SnippetSerializer
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
@@ -27,9 +25,11 @@ class SnippetList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-
+    def get_queryset(self):
+        return Snippet.objects.filter(owner=self.request.user)
 
 class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
+    renderer_classes = (JSONRenderer, )
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
